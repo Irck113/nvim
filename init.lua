@@ -18,7 +18,15 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 vim.opt.number = true
 vim.opt.relativenumber = true
-
+vim.opt.list = true
+vim.opt.listchars = {
+  space = ".",
+  trail = "·",   -- espacios al final
+  tab = "» ",    -- tabs
+  nbsp = "␣",
+  extends = ">",
+  precedes = "<",
+}
 vim.api.nvim_create_autocmd({"InsertEnter"}, {
   pattern = "*",
   callback = function() vim.opt.relativenumber = false end,

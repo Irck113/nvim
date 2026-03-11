@@ -4,7 +4,9 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      {"nvim-telescope/telescope-fzf-native.nvim" , build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"}
+      {"nvim-telescope/telescope-fzf-native.nvim" , build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"},
+      "AckslD/nvim-neoclip.lua",
+      "nvim-telescope/telescope-file-browser.nvim",
     },
     keys = {
       { "<leader>p", "<cmd>Telescope find_files<cr>", desc = "Buscar archivos" },
@@ -12,19 +14,34 @@ return {
       { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Buscar en texto" },
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Ver buffers" },
       { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Buscar ayuda" },
+      { "<leader>?", "<cmd>Telescope builtin<cr>", desc = "Todos los pickers" },
+      { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
+      { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
 
       -- LSP quick pickers
       { "<leader>lr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", desc = "LSP: references" },
       { "<leader>ld", "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", desc = "LSP: definitions" },
       { "<leader>li", "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>", desc = "LSP: implementations" },
-      { "<leader>ls", "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>", desc = "LSP: document symbols" },
-
+      { "<leader>le", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
+      { "<leader>lS", "<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>", desc = "Workspace symbols" },
+      {
+	      "<leader>ls",
+	      function()
+		      require("telescope.builtin").treesitter({
+			      symbols = { "function", "method" },
+		      })
+	      end,
+	      desc = "Treesitter functions",
+      },
       -- grep_string (palabra bajo cursor)
       { "<leader>gw", "<cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.expand('<cword>') })<cr>", desc = "Grep palabra bajo cursor" },
 
       -- Git pickers via Telescope
       { "<leader>gf", "<cmd>lua require('telescope.builtin').git_files()<cr>", desc = "Git: archivos tracked" },
       { "<leader>gS", "<cmd>lua require('telescope.builtin').git_status()<cr>", desc = "Git: estado (telescope)" },
+
+      -- Neoclip
+      { "<leader>fy", "<cmd>Telescope neoclip<cr>", desc = "Clipboard history" },
     },
     config = function()
       local telescope = require("telescope")
@@ -64,7 +81,10 @@ return {
         local exts = { "gd", "gdshader", "gdshaders", "md" } -- incluyo gdshaders por si acaso
         -- exclusions comunes
         local excludes = {
-          ".git",
+          ".git/",
+	  "vendor",
+	  "build",
+	  "dist",
           "node_modules",
         }
         -- exclude image/binary patterns
@@ -114,7 +134,13 @@ return {
         defaults = {
           -- Por defecto abrimos en modo Normal
           initial_mode = "normal",
-
+	  file_ignore_patterns = {
+		  "%.git/",
+		  "vendor/",
+		  "build/",
+		  "dist/",
+		  "node_modules/",
+	  },
           mappings = {
             -- Mapeos en modo Normal dentro del popup de Telescope
             n = {
