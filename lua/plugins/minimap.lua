@@ -15,7 +15,9 @@ return {
       },
       window = {
         show_integration_count = false,
-        width = 20,
+        width = 12,
+	winblend = 25,
+	zindex = 10,
       },
     })
 
@@ -26,7 +28,9 @@ return {
     vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
       callback = function()
         -- uso pcall para evitar errores raros en buffers especiales
-        pcall(function() require("mini.map").open() end)
+	if vim.bo.buftype == "" then
+		pcall(function() require("mini.map").open() end)
+	end
       end,
     })
 

@@ -11,6 +11,11 @@ return {
         actions = { open_file = { quit_on_open = false } },
         renderer = { highlight_git = true, icons = { show = { git = true } } },
 
+	update_focused_file = {
+		enable = true,
+		update_root = true,
+	},
+
         -- on_attach: mapeos buffer-local para el árbol (no rompen nada global)
         on_attach = function(bufnr)
           local function opts(desc)
@@ -41,6 +46,7 @@ return {
 
       -- keymap global: <leader>e para toggle tree (como tenías)
       vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Tree: toggle" })
+      vim.keymap.set("n", "<leader>w", ":NvimTreeFindFileToggle<CR>", { desc = "Tree: reveal file" })
     end,
   },
 }

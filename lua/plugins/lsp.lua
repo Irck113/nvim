@@ -56,6 +56,11 @@ return {
       settings = {},
     }
 
+    -- ===== PHP =====
+    register_lsp("intelephense", {
+      filetypes = { "php" },
+      root_markers = {'artisan'},
+    })
     if vim.fn.has("win32") == 1 then
       local port = tonumber(os.getenv("GDScript_Port")) or 6005
       gd_cfg.cmd = { "ncat", "localhost", tostring(port) }
