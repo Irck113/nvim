@@ -1,6 +1,8 @@
 -- ============================================================================
 -- LEADER KEY (debe ir ANTES que cualquier require o plugin)
 -- ============================================================================
+vim.keymap.set('n', 'B', '^')
+vim.keymap.set('n', 'E', '$')
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.timeoutlen = 2000
