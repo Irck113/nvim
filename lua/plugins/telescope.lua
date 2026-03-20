@@ -17,7 +17,6 @@ return {
       { "<leader>?", "<cmd>Telescope builtin<cr>", desc = "Todos los pickers" },
       { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
       { "<leader>fk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-
       -- LSP quick pickers
       { "<leader>lr", "<cmd>lua require('telescope.builtin').lsp_references()<cr>", desc = "LSP: references" },
       { "<leader>ld", "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", desc = "LSP: definitions" },
@@ -189,7 +188,15 @@ return {
 
           -- buffers: útil entrar en insert para filtrar rápido
           buffers = {
-            initial_mode = "insert",
+            initial_mode = "normal",
+	    mappings = {
+		    i = {
+			    ["<C-e>"] = actions.delete_buffer,
+		    },
+		    n = {
+			    ["<C-e>"] = actions.delete_buffer,
+		    },
+	    },
           },
 
           -- help_tags: igual, es cómodo escribir desde el inicio
